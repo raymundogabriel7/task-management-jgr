@@ -10,9 +10,10 @@ interface BaseRepositoryInterface
     /**
      * Find all resource
      *
+     * @param array $relations
      * @return Model|null
      */
-    public function all();
+    public function all(array $relations = []);
 
     /**
      * Find a resource by id

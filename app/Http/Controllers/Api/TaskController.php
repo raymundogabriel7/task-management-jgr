@@ -29,11 +29,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        if($allTasks = $this->taskRepository->all()) {
-            return response()->json(['message' => 'All Tasks', 'data' => $allTasks->toArray()], config('constants.HTTP_CODE_OK'));
+        if($allTasks = $this->taskRepository->all(['user'])) {
+            return response()->json(['message' => 'All Tasks', 'data' => $allTasks->toArray(),  'success' => true], config('constants.HTTP_CODE_OK'));
         }
 
-        return response()->json(['message' => 'Failed to fetch all.'], config('constants.HTTP_CODE_INTERNAL_SERVER_ERROR'));
+        return response()->json(['message' => 'Failed to fetch all.', 'success' => false], config('constants.HTTP_CODE_INTERNAL_SERVER_ERROR'));
     }
 
     /**
@@ -46,11 +46,11 @@ class TaskController extends Controller
     {
         $newTask = $this->taskRepository->save($request->request->all());
 
-        if (!$newTask) {
-            return response()->json(['message' => 'Failed to save.'], config('constants.HTTP_CODE_BAD_REQUEST'));
+        if ($newTask) {
+            return response()->json(['message' => 'Successfully saved!', 'data' => $newTask->toArray(), 'success' => true], config('constants.HTTP_CODE_OK'));
         }
         
-        return response()->json(['message' => 'Success', 'data' => $newTask->toArray()], config('constants.HTTP_CODE_OK'));
+        return response()->json(['message' => 'Failed to save.', 'success' => false], config('constants.HTTP_CODE_BAD_REQUEST'));        
     }
 
     /**
@@ -58,11 +58,11 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        if($showTask = $this->taskRepository->findOne($task)) {
-            return response()->json(['message' => 'Task', 'data', $showTask->toArray()], config('constants.HTTP_CODE_OK'));
+        if($task) {
+            return response()->json(['message' => 'Task', 'data'=> $task->toArray(), 'success' => true], config('constants.HTTP_CODE_OK'));
         }
 
-        return response()->json(['message' => 'Failed to fetch.'], config('constants.HTTP_CODE_NOT_FOUND'));
+        return response()->json(['message' => 'Failed to fetch.', 'success' => false], config('constants.HTTP_CODE_NOT_FOUND'));
     }
 
     /**
@@ -72,11 +72,11 @@ class TaskController extends Controller
     {
         $task = $this->taskRepository->update($task, $request->request->all());
 
-        if (!$task) {
-            return response()->json(['message' => 'Failed to update.'], config('constants.HTTP_CODE_BAD_REQUEST'));
+        if ($task) {
+            return response()->json(['message' => 'Successfully updated!', 'data' => $task->toArray(), 'success' => true], config('constants.HTTP_CODE_OK'));
         }
-        
-        return response()->json(['message' => 'Success', 'data' => $task->toArray()], config('constants.HTTP_CODE_OK'));
+
+        return response()->json(['message' => 'Failed to update.', 'success' => false], config('constants.HTTP_CODE_BAD_REQUEST'));
     }
 
     /**
@@ -84,10 +84,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        if(!$this->taskRepository->delete($task)) {
-            return response()->json(['message' => 'Failed to update.'], config('constants.HTTP_CODE_NOT_FOUND'));
+        if($this->taskRepository->delete($task)) {
+            return response()->json(['message' => 'Deleted', 'success' => true], config('constants.HTTP_CODE_OK'));    
         }
 
-        return response()->json(['message' => 'Deleted'], config('constants.HTTP_CODE_OK'));
+        return response()->json(['message' => 'Failed to update.', 'success' => false], config('constants.HTTP_CODE_NOT_FOUND'));
     }
 }

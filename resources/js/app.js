@@ -4,8 +4,11 @@ import Login from './components/Login.vue';
 import TaskList from './components/Task/TaskList.vue';
 import TaskCreate from './components/Task/TaskCreate.vue';
 import TaskEdit from './components/Task/TaskEdit.vue';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
-//import router from './router';
 
 const app = createApp({
     components: {
@@ -15,5 +18,6 @@ const app = createApp({
         TaskEdit
     }
 });
-//app.use(router)
+
+app.use(VueSweetalert2);
 app.mount("#app")

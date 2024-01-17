@@ -21,10 +21,10 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('token-name')->plainTextToken;
 
-            return response()->json(['token' => $token, 'user' => $user, 'message' => 'Success'], config('constants.HTTP_CODE_OK'));
+            return response()->json(['token' => $token, 'user' => $user, 'message' => 'Success', 'success' => true], config('constants.HTTP_CODE_OK'));
         }
 
-        return response()->json(['message' => 'Invalid credentials.'], config('constants.HTTP_CODE_UNAUTHORIZED'));
+        return response()->json(['message' => 'Invalid credentials.', 'success' => false], config('constants.HTTP_CODE_UNAUTHORIZED'));
     }
 
     /**
@@ -37,6 +37,6 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Tokens Revoked'], config('constants.HTTP_CODE_OK'));
+        return response()->json(['message' => 'Tokens Revoked', 'success' => true], config('constants.HTTP_CODE_OK'));
     }
 }

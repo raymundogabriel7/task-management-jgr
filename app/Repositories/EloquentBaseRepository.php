@@ -53,11 +53,17 @@ class EloquentBaseRepository implements BaseRepositoryInterface
     }
 
     /**
+     * @param array $relations
      * @inheritdoc
      */
-    public function all()
+    public function all(array $relations = [])
     {
-        return $this->model->get();
+        $model = $this->model;
+
+        if($relations) {
+            $model = $model->with($relations);
+        }
+        return $model->get();
     }
 
     /**
