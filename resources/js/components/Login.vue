@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <h2>Login</h2>
-    <form @submit.prevent="login">
-      <label>Email:</label>
-      <input v-model="email" type="email" required />
-      <br />
-      <label>Password:</label>
-      <input v-model="password" type="password" required />
-      <br />
-      <button type="submit">Login</button>
-    </form>
+  <div class="container mt-5">
+    <div class="row mt-3">
+      <h2>Login</h2>
+      <form @submit.prevent="login">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input class="form-control" v-model="email" type="email" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control" v-model="password" type="password" required />
+        </div>
+        <button class="btn btn-primary" type="submit">Login</button>
+      </form>
+      </div>
   </div>
 </template>
 
@@ -31,10 +35,10 @@ export default {
         password: this.password,
       });
       if(userAuthenticate.status === constants.HTTP_CODE_UNAUTHORIZED) {
-          console.log(userAuthenticate.data.message)
+          this.$swal(userAuthenticate.data.message)
       } else {
         localStorage.setItem('token', userAuthenticate.data.token);
-        this.$router.push('/');
+        window.location.href = import.meta.env.VITE_APP_BASE_URL + `tasks`
       }
     }
   },

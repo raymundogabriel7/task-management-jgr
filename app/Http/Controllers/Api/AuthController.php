@@ -24,7 +24,7 @@ class AuthController extends Controller
             return response()->json(['token' => $token, 'user' => $user, 'message' => 'Success', 'success' => true], config('constants.HTTP_CODE_OK'));
         }
 
-        return response()->json(['message' => 'Invalid credentials.', 'success' => false], config('constants.HTTP_CODE_UNAUTHORIZED'));
+        return response()->json(['message' => 'Invaid username or password', 'success' => false], config('constants.HTTP_CODE_UNAUTHORIZED'));
     }
 
     /**
